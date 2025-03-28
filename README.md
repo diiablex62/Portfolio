@@ -1,4 +1,4 @@
-# Portfolio - Développeur Web 👨‍💻
+# Portfolio - Développeur Web [ En cours] 👨‍💻
 
 Bienvenue sur mon portfolio en ligne ! ✨ ce projet a été conçu pour présenter mes compétences et mes réalisations en tant que développeur web. vous y trouverez un aperçu de mon parcours, de mes projets et de mes compétences techniques.
 
