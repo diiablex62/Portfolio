@@ -1,5 +1,7 @@
 # Portfolio - Développeur Web [ En cours !] 👨‍💻
 
+**Vous pouvez visualiser ce portfolio en ligne ici : [https://portfoliodiiablex.netlify.app/](https://portfoliodiiablex.netlify.app/)**
+
 Bienvenue sur mon portfolio en ligne ! ✨ ce projet a été conçu pour présenter mes compétences et mes réalisations en tant que développeur web. vous y trouverez un aperçu de mon parcours, de mes projets et de mes compétences techniques.
 
 ## Aperçu 🔍
