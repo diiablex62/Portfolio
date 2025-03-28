@@ -1,0 +1,171 @@
+// c:\Users\Alex\Desktop\PORTFOLIO\Portfolio\src\assets\styles\hero\_hero.scss
+
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.name-title {
+  font-size: 6rem;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.welcome-text {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.hero-images {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.5s ease;
+  pointer-events: none;
+  width: 200px;
+  height: 200px;
+  z-index: 1;
+
+  &.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .hero-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    position: absolute;
+    opacity: 1;
+    transition: opacity 0.3s ease, transform 0.5s ease;
+  }
+
+  &.left {
+    top: 50px;
+    left: 50px;
+
+    .hero-image {
+      border-radius: 50%;
+      top: 0;
+      left: 0;
+      transform: translateX(-150%);
+    }
+  }
+
+  &.visible.left {
+    .hero-image {
+      transform: translateX(0);
+    }
+  }
+
+  &.bottom-left {
+    bottom: 150px;
+    left: 250px;
+
+    .hero-image {
+      bottom: 35%;
+      left: 0;
+      transform: translateY(50%) scale(0.1) rotate(0deg);
+    }
+
+    .hero-image-2 {
+      border-radius: 0;
+    }
+  }
+
+  &.visible.bottom-left {
+    .hero-image {
+      transform: translateY(50%) scale(1) rotate(360deg);
+    }
+  }
+
+  &.center-right {
+    top: 50%;
+    right: 150px;
+    transform: translateY(-50%) translateX(150%);
+
+    .hero-image {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &.visible.center-right {
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+@keyframes scroll-animation {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px); // Increased animation distance
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.scroll-down {
+  position: absolute;
+  bottom: 20px; // Adjusted bottom position
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  z-index: 1;
+
+  .scroll-arrow {
+    width: 30px; // Much larger width
+    height: 30px; // Much larger height
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: scroll-animation 1.5s infinite; // Keep the animation
+
+    &::before {
+      content: '';
+      width: 25px; // Much larger width
+      height: 25px; // Much larger height
+      border-left: 3px solid black; // Increased border thickness
+      border-bottom: 3px solid black; // Increased border thickness
+      transform: rotate(-45deg);
+      margin-left: 2px; // Adjusted margin
+      margin-top: 2px; // Adjusted margin
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .hero-images.center-right {
+    display: none;
+  }
+}

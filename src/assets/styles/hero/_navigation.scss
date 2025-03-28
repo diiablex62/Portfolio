@@ -1,0 +1,154 @@
+// c:\Users\Alex\Desktop\PORTFOLIO\Portfolio\src\assets\styles\hero\_navigation.scss
+
+.portfolio-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 100;
+  background-color: transparent;
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    flex-grow: 1;
+    justify-content: center;
+
+    .nav-link {
+      position: relative;
+      text-decoration: none;
+      color: black;
+      opacity: 0.7;
+      transition: opacity 0.3s ease, background-color 0.3s ease;
+      font-size: 1.1rem;
+      font-weight: 500;
+      display: inline-block;
+      overflow: hidden; // Hide the overflow of the pseudo-element
+
+      span {
+        padding: 10px 15px;
+        display: inline-block;
+        transition: background-color 0.3s ease, transform 0.3s ease; /* Add transition to span */
+        position: relative;
+        z-index: 1; // Ensure the text is above the pseudo-element
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 100%; // Start below the element
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        transition: transform 0.3s ease;
+        z-index: 0; // Place the pseudo-element behind the text
+      }
+
+      /* Combine hover and active styles here */
+      &:hover,
+      &.active {
+        opacity: 1;
+        color: white;
+
+        &::before {
+          transform: translateY(-100%); // Move up to cover the element
+        }
+      }
+      &.active {
+        span {
+          border-bottom: 2px solid white; /* Add border-bottom to active */
+        }
+      }
+    }
+  }
+  .desktop-contact-btn {
+    display: block;
+  }
+  .hamburger-menu {
+    display: none;
+    cursor: pointer;
+    .bar {
+      width: 25px;
+      height: 3px;
+      background-color: black;
+      margin: 5px 0;
+      transition: 0.4s;
+    }
+  }
+  .nav-links-list {
+    display: flex;
+    gap: 2rem;
+    flex-grow: 1;
+    justify-content: center;
+    transition: transform 0.3s ease-in-out;
+    &.open {
+      transform: translateX(0);
+    }
+  }
+  .mobile-contact-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .portfolio-navigation {
+    flex-direction: column;
+    align-items: flex-start;
+    .nav-links {
+      flex-direction: column;
+      width: 100%;
+      align-items: flex-start;
+      gap: 0;
+    }
+    .desktop-contact-btn {
+      display: none;
+    }
+    .hamburger-menu {
+      display: block;
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      z-index: 101;
+    }
+    .nav-links-list {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: white;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform: translateX(-100%); /* Menu is hidden by default */
+      z-index: 100;
+      transition: transform 0.3s ease-in-out; /* Add transition to the menu */
+    }
+    &.menu-open {
+        .nav-links-list {
+            transform: translateX(0); /* Menu is visible when open */
+        }
+        & .hamburger-menu { /* Add & to target the hamburger-menu inside .menu-open */
+            .bar:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            .bar:nth-child(2) {
+                opacity: 0;
+            }
+            .bar:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+        }
+    }
+    .mobile-contact-btn {
+      display: block;
+      margin-top: 2rem;
+    }
+  }
+}
