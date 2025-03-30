@@ -1,20 +1,22 @@
 .custom-cursor {
   position: fixed;
-  width: 50px; // Increased width
-  height: 50px; // Increased height
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background-color: black;
   pointer-events: none;
-  transition: transform 0.1s ease-out;
+  transition: transform 0.1s ease-out, box-shadow 0.1s ease-out, background-color 0.1s ease-out;
   z-index: 9999;
-  transform: translate(-50%, -50%); // Center the cursor
+  transform: translate(-50%, -50%);
 
   &.name-title-hovered {
     transform: scale(1.5) translate(-50%, -50%);
+    background-color: black;
   }
 
   &.hovering {
-    background-color: rgba(0, 0, 0, 0.14);
-    transform: scale(1.3) translate(-50%, -50%);
+    background-color: transparent;
+    box-shadow: 1px 1px 7px 3px rgba(0, 0, 0, 0.14); 
+    transform: scale(1.1) translate(-45%, -45%); 
   }
 }

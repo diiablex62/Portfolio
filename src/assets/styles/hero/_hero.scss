@@ -1,4 +1,4 @@
-// c:\Users\Alex\Desktop\PORTFOLIO\Portfolio\src\assets\styles\hero\_hero.scss
+// _hero.scss
 
 .hero-section {
   display: flex;
@@ -9,6 +9,7 @@
   width: 100%;
   position: relative;
   z-index: 0;
+  overflow: hidden; // Prevent potential overflow issues
 }
 
 .hero-content {
@@ -22,6 +23,7 @@
   gap: 10px;
   width: 100%;
   max-width: 500px;
+  padding: 0 20px; // Add padding for smaller screens
 }
 
 .name-title {
@@ -29,11 +31,13 @@
   font-weight: bold;
   text-align: center;
   transition: all 0.3s ease;
+  line-height: 1; // Improve line height
 }
 
 .welcome-text {
   font-size: 2rem;
   text-align: center;
+  line-height: 1.2; // Improve line height
 }
 
 .hero-images {
@@ -123,7 +127,7 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-20px); // Increased animation distance
+    transform: translateY(-7px); // Further reduced animation distance
   }
   100% {
     transform: translateY(0);
@@ -132,9 +136,9 @@
 
 .scroll-down {
   position: absolute;
-  bottom: 20px; // Adjusted bottom position
+  bottom: 30px; // Adjusted bottom value
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(calc(-50% - 1px)); // Adjusted translateX value
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -142,24 +146,26 @@
   gap: 10px;
   cursor: pointer;
   z-index: 1;
+  width: 38px; // Adjusted width
+  height: 38px; // Adjusted height
 
   .scroll-arrow {
-    width: 30px; // Much larger width
-    height: 30px; // Much larger height
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: scroll-animation 1.5s infinite; // Keep the animation
+    animation: scroll-animation 1.5s infinite;
 
     &::before {
       content: '';
-      width: 25px; // Much larger width
-      height: 25px; // Much larger height
-      border-left: 3px solid black; // Increased border thickness
-      border-bottom: 3px solid black; // Increased border thickness
+      width: 16px; // Adjusted width
+      height: 16px; // Adjusted height
+      border-left: 2px solid black;
+      border-bottom: 2px solid black;
       transform: rotate(-45deg);
-      margin-left: 2px; // Adjusted margin
-      margin-top: 2px; // Adjusted margin
+      margin-left: 0px;
+      margin-top: 0px;
     }
   }
 }
@@ -167,5 +173,20 @@
 @media (max-width: 1200px) {
   .hero-images.center-right {
     display: none;
+  }
+  .name-title {
+    font-size: 4rem; // Reduce font size on smaller screens
+  }
+  .welcome-text {
+    font-size: 1.5rem; // Reduce font size on smaller screens
+  }
+}
+
+@media (max-width: 600px) {
+  .name-title {
+    font-size: 3rem; // Further reduce font size on smaller screens
+  }
+  .welcome-text {
+    font-size: 1.2rem; // Further reduce font size on smaller screens
   }
 }

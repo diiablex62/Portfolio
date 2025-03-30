@@ -14,7 +14,6 @@ function Hero({ scrollArrowRef, nameTitleRef, isNameTitleHovered }) { // Add isN
   }, [scrollArrowRef]);
 
   const handleScrollToNextSection = () => {
-    // Scroll to next section logic (if needed)
   };
 
   return (
