@@ -1,5 +1,3 @@
-// c:\Users\Alex\Desktop\PORTFOLIO\Portfolio\src\assets\styles\hero\_navigation.scss
-
 .portfolio-navigation {
   display: flex;
   justify-content: space-between;
@@ -28,41 +26,40 @@
       font-size: 1.1rem;
       font-weight: 500;
       display: inline-block;
-      overflow: hidden; // Hide the overflow of the pseudo-element
+      overflow: hidden;
 
       span {
         padding: 10px 15px;
         display: inline-block;
-        transition: background-color 0.3s ease, transform 0.3s ease; /* Add transition to span */
+        transition: background-color 0.3s ease, transform 0.3s ease;
         position: relative;
-        z-index: 1; // Ensure the text is above the pseudo-element
+        z-index: 1;
       }
 
       &::before {
         content: '';
         position: absolute;
-        top: 100%; // Start below the element
+        top: 100%;
         left: 0;
         width: 100%;
         height: 100%;
         background-color: black;
         transition: transform 0.3s ease;
-        z-index: 0; // Place the pseudo-element behind the text
+        z-index: 0;
       }
 
-      /* Combine hover and active styles here */
       &:hover,
       &.active {
         opacity: 1;
         color: white;
 
         &::before {
-          transform: translateY(-100%); // Move up to cover the element
+          transform: translateY(-100%);
         }
       }
       &.active {
         span {
-          border-bottom: 2px solid white; /* Add border-bottom to active */
+          border-bottom: 2px solid white;
         }
       }
     }
@@ -126,15 +123,15 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transform: translateX(-100%); /* Menu is hidden by default */
+      transform: translateX(-100%);
       z-index: 100;
-      transition: transform 0.3s ease-in-out; /* Add transition to the menu */
+      transition: transform 0.3s ease-in-out;
     }
     &.menu-open {
         .nav-links-list {
-            transform: translateX(0); /* Menu is visible when open */
+            transform: translateX(0);
         }
-        & .hamburger-menu { /* Add & to target the hamburger-menu inside .menu-open */
+        & .hamburger-menu {
             .bar:nth-child(1) {
                 transform: rotate(-45deg) translate(-5px, 6px);
             }

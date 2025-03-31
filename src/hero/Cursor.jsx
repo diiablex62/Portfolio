@@ -3,10 +3,10 @@ import '../assets/styles/hero/_cursor.scss';
 
 const DEFAULT_EASING = 0.1;
 const NAME_TITLE_MAGNET_DISTANCE = 100;
-const NAV_LINK_MAGNET_DISTANCE = 20; // Very close distance for nav links
-const CONTACT_BUTTON_MAGNET_DISTANCE = 80; // Larger distance for contact button
-const SCROLL_ARROW_MAGNET_DISTANCE = 80; // Magnet distance for the scroll arrow
-const TOP_LEFT_DEAD_ZONE_SIZE = 100; // Size of the dead zone (100px x 100px)
+const NAV_LINK_MAGNET_DISTANCE = 20; 
+const CONTACT_BUTTON_MAGNET_DISTANCE = 200; 
+const SCROLL_ARROW_MAGNET_DISTANCE = 80; 
+const TOP_LEFT_DEAD_ZONE_SIZE = 10; 
 
 function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered }) {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -16,7 +16,7 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
   const [isHovering, setIsHovering] = useState(false);
   const [isNavLinksHovered, setIsNavLinksHovered] = useState(false);
   const [isScrollArrowHovered, setIsScrollArrowHovered] = useState(false);
-  const [isScrollArrowDirectlyHovered, setIsScrollArrowDirectlyHovered] = useState(false); // New state
+  const [isScrollArrowDirectlyHovered, setIsScrollArrowDirectlyHovered] = useState(false); 
 
   const handleMouseMove = useCallback((event) => {
     setCursorPosition({ x: event.clientX, y: event.clientY });
@@ -92,7 +92,6 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
     });
     if (closestButton && closestButton.distance < CONTACT_BUTTON_MAGNET_DISTANCE) {
       isNearContactButton = true;
-      console.log("Cursor is near contact button");
     }
     return isNearContactButton;
   }, [cursorPosition]);
@@ -138,12 +137,11 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
       let easing = currentEasing;
       let isNearContactButton = isCursorNearContactButton();
       let isNearScrollArrow = isCursorNearScrollArrow();
-      const isDirectlyOverScrollArrow = isCursorDirectlyOverScrollArrow(); // Check if directly over
+      const isDirectlyOverScrollArrow = isCursorDirectlyOverScrollArrow(); 
 
-      setIsScrollArrowDirectlyHovered(isDirectlyOverScrollArrow); // Update the state
+      setIsScrollArrowDirectlyHovered(isDirectlyOverScrollArrow);
 
       if (isCursorInDeadZone()) {
-        console.log("Cursor is in dead zone");
         easing = DEFAULT_EASING;
         setCurrentEasing(DEFAULT_EASING);
       } else if (isCursorNearNameTitle()) {
