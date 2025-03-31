@@ -3,10 +3,10 @@ import '../assets/styles/hero/_cursor.scss';
 
 const DEFAULT_EASING = 0.1;
 const NAME_TITLE_MAGNET_DISTANCE = 100;
-const NAV_LINK_MAGNET_DISTANCE = 20; 
-const CONTACT_BUTTON_MAGNET_DISTANCE = 200; 
-const SCROLL_ARROW_MAGNET_DISTANCE = 80; 
-const TOP_LEFT_DEAD_ZONE_SIZE = 10; 
+const NAV_LINK_MAGNET_DISTANCE = 20;
+const CONTACT_BUTTON_MAGNET_DISTANCE = 200;
+const SCROLL_ARROW_MAGNET_DISTANCE = 80;
+const TOP_LEFT_DEAD_ZONE_SIZE = 10;
 
 function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered }) {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -16,7 +16,12 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
   const [isHovering, setIsHovering] = useState(false);
   const [isNavLinksHovered, setIsNavLinksHovered] = useState(false);
   const [isScrollArrowHovered, setIsScrollArrowHovered] = useState(false);
-  const [isScrollArrowDirectlyHovered, setIsScrollArrowDirectlyHovered] = useState(false); 
+  const [isScrollArrowDirectlyHovered, setIsScrollArrowDirectlyHovered] = useState(false);
+  const [isContactButtonDirectlyHovered, setIsContactButtonDirectlyHovered] = useState(false);
+  const [isNearNameTitle, setIsNearNameTitle] = useState(false);
+  const [isNearNavLink, setIsNearNavLink] = useState(false);
+  const [isNearContactButton, setIsNearContactButton] = useState(false);
+  const [isNearScrollArrow, setIsNearScrollArrow] = useState(false);
 
   const handleMouseMove = useCallback((event) => {
     setCursorPosition({ x: event.clientX, y: event.clientY });
@@ -31,10 +36,9 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
     return cursorPosition.x < TOP_LEFT_DEAD_ZONE_SIZE && cursorPosition.y < TOP_LEFT_DEAD_ZONE_SIZE;
   }, [cursorPosition]);
 
-  const isCursorNearNameTitle = useCallback(() => {
+  const calculateIsNearNameTitle = useCallback(() => {
     const nameTitleRect = nameTitleRef.current?.getBoundingClientRect();
     if (!nameTitleRect) {
-      setIsNameTitleHovered(false);
       return false;
     }
 
@@ -42,16 +46,14 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
     const nameTitleCenterY = nameTitleRect.top + nameTitleRect.height / 2;
     const distance = Math.sqrt(
       Math.pow(cursorPosition.x - nameTitleCenterX, 2) +
-        Math.pow(cursorPosition.y - nameTitleCenterY, 2)
+      Math.pow(cursorPosition.y - nameTitleCenterY, 2)
     );
-    const isNear = distance < NAME_TITLE_MAGNET_DISTANCE;
-    setIsNameTitleHovered(isNear);
-    return isNear;
-  }, [cursorPosition, nameTitleRef, setIsNameTitleHovered]);
+    return distance < NAME_TITLE_MAGNET_DISTANCE;
+  }, [cursorPosition, nameTitleRef]);
 
-  const isCursorNearNavLink = useCallback(() => {
+  const calculateIsNearNavLink = useCallback(() => {
     const navLinks = document.querySelectorAll('.nav-link');
-    let isNearNavLink = false;
+    let isNear = false;
 
     navLinks.forEach((link) => {
       const linkRect = link.getBoundingClientRect();
@@ -59,22 +61,21 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
       const linkCenterY = linkRect.top + linkRect.height / 2;
       const distance = Math.sqrt(
         Math.pow(cursorPosition.x - linkCenterX, 2) +
-          Math.pow(cursorPosition.y - linkCenterY, 2)
+        Math.pow(cursorPosition.y - linkCenterY, 2)
       );
 
       if (distance < NAV_LINK_MAGNET_DISTANCE) {
-        isNearNavLink = true;
+        isNear = true;
       }
     });
-    setIsNavLinksHovered(isNearNavLink);
-    return isNearNavLink;
+    return isNear;
   }, [cursorPosition]);
 
-  const isCursorNearContactButton = useCallback(() => {
+  const calculateIsNearContactButton = useCallback(() => {
     const contactButtons = document.querySelectorAll('.contact-btn');
     let closestButton = null;
     let minDistance = Infinity;
-    let isNearContactButton = false;
+    let isNear = false;
 
     contactButtons.forEach((button) => {
       const buttonRect = button.getBoundingClientRect();
@@ -82,7 +83,7 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
       const buttonCenterY = buttonRect.top + buttonRect.height / 2;
       const distance = Math.sqrt(
         Math.pow(cursorPosition.x - buttonCenterX, 2) +
-          Math.pow(cursorPosition.y - buttonCenterY, 2)
+        Math.pow(cursorPosition.y - buttonCenterY, 2)
       );
 
       if (distance < minDistance) {
@@ -91,12 +92,12 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
       }
     });
     if (closestButton && closestButton.distance < CONTACT_BUTTON_MAGNET_DISTANCE) {
-      isNearContactButton = true;
+      isNear = true;
     }
-    return isNearContactButton;
+    return isNear;
   }, [cursorPosition]);
 
-  const isCursorNearScrollArrow = useCallback(() => {
+  const calculateIsNearScrollArrow = useCallback(() => {
     const scrollArrow = document.querySelector('.scroll-arrow');
     if (!scrollArrow) return false;
 
@@ -105,14 +106,12 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
     const arrowCenterY = arrowRect.top + arrowRect.height / 2;
     const distance = Math.sqrt(
       Math.pow(cursorPosition.x - arrowCenterX, 2) +
-        Math.pow(cursorPosition.y - arrowCenterY, 2)
+      Math.pow(cursorPosition.y - arrowCenterY, 2)
     );
-    const isNear = distance < SCROLL_ARROW_MAGNET_DISTANCE;
-    setIsScrollArrowHovered(isNear);
-    return isNear;
+    return distance < SCROLL_ARROW_MAGNET_DISTANCE;
   }, [cursorPosition]);
 
-  const isCursorDirectlyOverScrollArrow = useCallback(() => {
+  const calculateIsDirectlyOverScrollArrow = useCallback(() => {
     const scrollArrow = document.querySelector('.scroll-arrow');
     if (!scrollArrow) return false;
 
@@ -125,6 +124,41 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
     );
   }, [cursorPosition]);
 
+  const calculateIsDirectlyOverContactButton = useCallback(() => {
+    const contactButtons = document.querySelectorAll('.contact-btn');
+    let isDirectlyOver = false;
+
+    contactButtons.forEach((button) => {
+      const buttonRect = button.getBoundingClientRect();
+      if (
+        cursorPosition.x >= buttonRect.left &&
+        cursorPosition.x <= buttonRect.right &&
+        cursorPosition.y >= buttonRect.top &&
+        cursorPosition.y <= buttonRect.bottom
+      ) {
+        isDirectlyOver = true;
+      }
+    });
+    return isDirectlyOver;
+  }, [cursorPosition]);
+
+  useEffect(() => {
+    setIsNearNameTitle(calculateIsNearNameTitle());
+    setIsNearNavLink(calculateIsNearNavLink());
+    setIsNearContactButton(calculateIsNearContactButton());
+    setIsNearScrollArrow(calculateIsNearScrollArrow());
+    setIsScrollArrowDirectlyHovered(calculateIsDirectlyOverScrollArrow());
+    setIsContactButtonDirectlyHovered(calculateIsDirectlyOverContactButton());
+  }, [cursorPosition, calculateIsNearNameTitle, calculateIsNearNavLink, calculateIsNearContactButton, calculateIsNearScrollArrow, calculateIsDirectlyOverScrollArrow, calculateIsDirectlyOverContactButton]);
+
+  useEffect(() => {
+    setIsNameTitleHovered(isNearNameTitle);
+  }, [isNearNameTitle, setIsNameTitleHovered]);
+
+  useEffect(() => {
+    setIsContactButtonHovered(isNearContactButton);
+  }, [isNearContactButton, setIsContactButtonHovered]);
+
   useEffect(() => {
     const dot = dotRef.current;
     if (!dot) return;
@@ -135,19 +169,14 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
       let targetX = cursorPosition.x;
       let targetY = cursorPosition.y;
       let easing = currentEasing;
-      let isNearContactButton = isCursorNearContactButton();
-      let isNearScrollArrow = isCursorNearScrollArrow();
-      const isDirectlyOverScrollArrow = isCursorDirectlyOverScrollArrow(); 
-
-      setIsScrollArrowDirectlyHovered(isDirectlyOverScrollArrow);
 
       if (isCursorInDeadZone()) {
         easing = DEFAULT_EASING;
         setCurrentEasing(DEFAULT_EASING);
-      } else if (isCursorNearNameTitle()) {
+      } else if (isNearNameTitle) {
         easing = DEFAULT_EASING;
         setCurrentEasing(DEFAULT_EASING);
-      } else if (isCursorNearNavLink()) {
+      } else if (isNearNavLink) {
         easing = 0.2;
         setCurrentEasing(0.2);
         const navLinks = document.querySelectorAll('.nav-link');
@@ -160,7 +189,7 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
           const linkCenterY = linkRect.top + linkRect.height / 2;
           const distance = Math.sqrt(
             Math.pow(cursorPosition.x - linkCenterX, 2) +
-              Math.pow(cursorPosition.y - linkCenterY, 2)
+            Math.pow(cursorPosition.y - linkCenterY, 2)
           );
 
           if (distance < minDistance) {
@@ -191,7 +220,7 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
           const buttonCenterY = buttonRect.top + buttonRect.height / 2;
           const distance = Math.sqrt(
             Math.pow(cursorPosition.x - buttonCenterX, 2) +
-              Math.pow(cursorPosition.y - buttonCenterY, 2)
+            Math.pow(cursorPosition.y - buttonCenterY, 2)
           );
 
           if (distance < minDistance) {
@@ -209,7 +238,6 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
           setCurrentEasing(DEFAULT_EASING);
         }
       }
-      setIsContactButtonHovered(isNearContactButton);
 
       const dx = targetX - dotPosition.x;
       const dy = targetY - dotPosition.y;
@@ -228,26 +256,22 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
   }, [
     cursorPosition,
     dotPosition,
-    isCursorNearNameTitle,
+    isNearNameTitle,
     nameTitleRef,
-    isCursorNearNavLink,
-    isCursorNearScrollArrow,
-    isCursorDirectlyOverScrollArrow, // Add the new dependency
+    isNearNavLink,
+    isNearScrollArrow,
+    isCursorInDeadZone,
   ]);
 
   useEffect(() => {
     const handleMouseEnter = (event) => {
-      console.log("handleMouseEnter called on:", event.target);
       if (!isCursorInDeadZone()) {
         setIsHovering(true);
-        console.log("setIsHovering(true) called");
       }
     };
     const handleMouseLeave = (event) => {
-      console.log("handleMouseLeave called on:", event.target);
       if (!isCursorInDeadZone()) {
         setIsHovering(false);
-        console.log("setIsHovering(false) called");
       }
     };
 
@@ -285,12 +309,12 @@ function Cursor({ nameTitleRef, setIsNameTitleHovered, setIsContactButtonHovered
 
   return (
     <div
-      className={`custom-cursor ${isCursorNearNameTitle() ? 'name-title-hovered' : ''} ${isHovering || isNavLinksHovered || isCursorNearContactButton() || isScrollArrowHovered ? 'hovering' : ''} ${isScrollArrowDirectlyHovered ? 'scroll-arrow-direct-hover' : ''}`} // Add the new class
+      className={`custom-cursor ${isNearNameTitle ? 'name-title-hovered' : ''} ${isHovering || isNearNavLink || isNearContactButton || isNearScrollArrow ? 'hovering' : ''} ${isScrollArrowDirectlyHovered ? 'scroll-arrow-direct-hover' : ''} ${isContactButtonDirectlyHovered ? 'hidden' : ''}`}
       ref={dotRef}
       style={{
         left: `${dotPosition.x}px`,
         top: `${dotPosition.y}px`,
-        zIndex: 9999,
+        zIndex:-50 ,
       }}
     />
   );
